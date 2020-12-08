@@ -20,7 +20,9 @@ def validator_2(p):
     policy_letter_min = int(policy.split(" ")[0].split("-")[0])
     policy_letter_max = int(policy.split(" ")[0].split("-")[1])
 
-    valid = (password[policy_letter_min-1] == policy_letter) ^ (password[policy_letter_max-1] == policy_letter)
+    valid = (password[policy_letter_min - 1] == policy_letter) ^ (
+        password[policy_letter_max - 1] == policy_letter
+    )
 
     return valid
 

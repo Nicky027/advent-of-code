@@ -8,5 +8,5 @@ def main():
     print(input_validator(input_df, validator_2))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

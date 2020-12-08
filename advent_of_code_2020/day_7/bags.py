@@ -19,7 +19,7 @@ def parse_rules(rules_list):
 
 def contains(bag_1, bag_2, rules):
     """Returns True if bag_1 contains bag_2 and False otherwise"""
-    
+
     if rules[bag_1] == [(0, "other bags")]:
         return False
     elif bag_2 in [x[1] for x in rules[bag_1]]:

@@ -9,5 +9,5 @@ def main():
     print(multiply_add_up_entries(expense_report, 2020, 3))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

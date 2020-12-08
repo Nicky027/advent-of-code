@@ -6,8 +6,7 @@ def main():
         input_code = file.readlines()
 
     code = BootCode(input_code)
-    code.run()
-    print(code.accumulator)
+    print(code.run())
 
     code2 = BootCode(input_code)
     print(code2.modified_run())

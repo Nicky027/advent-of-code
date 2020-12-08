@@ -46,6 +46,8 @@ class BootCode:
                 self.terminated = True
                 break
 
+        return self.accumulator
+
     def modified_run(self):
         self.run()
 

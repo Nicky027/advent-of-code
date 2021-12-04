@@ -19,8 +19,8 @@ def main():
     last_winning_round = 0
 
     for board in boards:
-        # part 1
         wr = bg.get_board_winning_round(board, drawn_numbers)
+        # part 1
         if wr < winning_round:
             winning_round = wr
             winning_board = board

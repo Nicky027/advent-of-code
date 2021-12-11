@@ -22,5 +22,6 @@ def main():
     # part 2
     print(s2.score_completions(completions))
 
+
 if __name__ == "__main__":
     main()

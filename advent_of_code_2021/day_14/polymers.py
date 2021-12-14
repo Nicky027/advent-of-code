@@ -14,7 +14,7 @@ def step(polymer, rules):
     new_polymer = []
     for i, element in enumerate(polymer):
         new_polymer.append(element)
-        pair = "".join(polymer[i : i + 2])
+        pair = "".join(polymer[i:(i+2)])
         insertion = rules.get(pair)
         if insertion:
             new_polymer.append(insertion)
@@ -29,7 +29,7 @@ def score(polymer):
 def smart_polymer_representation(polymer, rules):
     pairs = {rule: 0 for rule in rules.keys()}
     for i in range(len(polymer) - 1):
-        pair = "".join(polymer[i : i + 2])
+        pair = "".join(polymer[i:(i+2)])
         if pair:
             pairs[pair] += 1
     return pairs
@@ -38,7 +38,10 @@ def smart_polymer_representation(polymer, rules):
 def smart_rules_representation(rules):
     smart_rules = {}
     for pair, element in rules.items():
-        smart_rules[pair] = ["".join([pair[0], element]), "".join([element, pair[1]])]
+        smart_rules[pair] = [
+            "".join([pair[0], element]),
+            "".join([element, pair[1]]),
+        ]
     return smart_rules
 
 

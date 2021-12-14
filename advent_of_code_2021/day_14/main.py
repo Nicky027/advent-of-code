@@ -1,5 +1,4 @@
 import polymers as ps
-from tqdm import tqdm
 
 
 def main():

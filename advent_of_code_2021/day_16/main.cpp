@@ -13,5 +13,8 @@ int main()
     Packet p(inputBinary);
 
     // Part 1
-    std::cout << p.VersionSum() << std::endl;
+    std::cout << "Version Sum: " << p.VersionSum() << std::endl;
+
+    // Part 2
+    std::cout << "Packet Value: " << p.PacketValue() << std::endl;
 }

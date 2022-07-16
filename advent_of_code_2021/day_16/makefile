@@ -11,13 +11,13 @@ all: $(OBJS)
 
 
 main.o: main.cpp
-	$(CC) $(FLAGS) main.cpp -std=c++17
+	$(CC) $(FLAGS) main.cpp
 
 utils.o: utils.cpp
-	$(CC) $(FLAGS) utils.cpp -std=c++17
+	$(CC) $(FLAGS) utils.cpp
 
 packet.o: packet.cpp
-	$(CC) $(FLAGS) packet.cpp -std=c++17
+	$(CC) $(FLAGS) packet.cpp
 
 clean:
 	rm -f $(OBJS) $(OUT)

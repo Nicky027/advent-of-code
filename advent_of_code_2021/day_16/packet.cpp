@@ -30,22 +30,16 @@ Packet::Packet(const std::vector<bool> &binaryVector) : m_inputData(binaryVector
             break;
         }
         case NumberOfSubpackets:
+        {
             m_numberOfSubpackets = parseNumberOfSubpackets(binaryVector);
             m_data = parseOperatorData(binaryVector, m_numberOfSubpackets, NumberOfSubpackets);
             m_subpackets = parseSubpackets(m_data, m_numberOfSubpackets, NumberOfSubpackets);
             break;
         }
+        case Undefined:
+            break;
+        }
     }
-}
-
-bool Packet::IsLiteral() const
-{
-    return m_type == Literal;
-}
-
-unsigned int Packet::Version() const
-{
-    return m_version;
 }
 
 unsigned int Packet::VersionSum() const
@@ -56,6 +50,84 @@ unsigned int Packet::VersionSum() const
         subpacketsVersionSum += s.VersionSum();
     }
     return m_version + subpacketsVersionSum;
+}
+
+unsigned long long Packet::PacketValue() const
+{
+    unsigned long long value{0};
+    switch (m_type)
+    {
+    case Sum:
+    {
+        for (Packet p : m_subpackets)
+            value += p.PacketValue();
+        break;
+    }
+    case Product:
+    {
+        value = 1;
+        for (Packet p : m_subpackets)
+            value *= p.PacketValue();
+        break;
+    }
+    case Minimum:
+    {
+        for (Packet p : m_subpackets)
+        {
+            unsigned long long packetValue{p.PacketValue()};
+            if (-packetValue > -value)
+                value = packetValue;
+        }
+        break;
+    }
+    case Maximum:
+    {
+        for (Packet p : m_subpackets)
+        {
+            unsigned long long packetValue{p.PacketValue()};
+            if (packetValue > value)
+                value = packetValue;
+        }
+        break;
+    }
+    case Literal:
+    {
+        std::vector<bool> binaryValue;
+        bool packetEnded{false};
+        size_t i{0};
+        while (!packetEnded)
+        {
+            for (size_t j{i + 1}; j < i + LITERAL_CHUNK_SIZE; j++)
+                binaryValue.push_back(m_data[j]);
+
+            if (m_data[i] == 0)
+                packetEnded = true;
+
+            i += LITERAL_CHUNK_SIZE;
+        }
+        value = BinaryToDecimal(binaryValue);
+        break;
+    }
+    case GreaterThan:
+    {
+        if (m_subpackets[0].PacketValue() > m_subpackets[1].PacketValue())
+            value = 1;
+        break;
+    }
+    case LessThan:
+    {
+        if (m_subpackets[0].PacketValue() < m_subpackets[1].PacketValue())
+            value = 1;
+        break;
+    }
+    case EqualTo:
+    {
+        if (m_subpackets[0].PacketValue() == m_subpackets[1].PacketValue())
+            value = 1;
+        break;
+    }
+    }
+    return value;
 }
 
 std::ostream &operator<<(std::ostream &os, const Packet &p)
@@ -70,13 +142,8 @@ std::ostream &operator<<(std::ostream &os, const Packet &p)
     os << "Length Type ID: " << p.m_lengthType << std::endl;
     os << "Subpackets Length: " << p.m_subpacketsLength << std::endl;
     os << "Number of Subpackets: " << p.m_numberOfSubpackets << std::endl;
-
-    os << "Data: ";
-    for (bool b : p.m_data)
-        os << b;
-    os << std::endl;
-
     os << "Version Sum: " << p.VersionSum() << std::endl;
+    os << "Packet Value: " << p.PacketValue() << std::endl;
 
     return os;
 }
@@ -133,6 +200,8 @@ std::vector<bool> parseOperatorData(const std::vector<bool> &binaryVector, unsig
             binaryVector.begin() + LENGTH_TYPE_ID_BIT + 1 + NUMBER_OF_SUBPACKETS_BITS_LENGTH,
             binaryVector.end());
         break;
+    case Undefined:
+        break;
     }
     return data;
 }
@@ -164,6 +233,8 @@ std::vector<Packet> parseSubpackets(const std::vector<bool> binaryVector, const 
         {
             remainingSubpackets = parseSubpackets(remainingData, length - numberOfSubpackets, lengthType);
         }
+        break;
+    case Undefined:
         break;
     }
     for (Packet p : remainingSubpackets)
@@ -244,6 +315,8 @@ std::vector<bool> findPacketData(const std::vector<bool> binaryVector)
             }
             break;
         }
+        case Undefined:
+            break;
         }
     }
 

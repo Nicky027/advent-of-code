@@ -5,7 +5,14 @@
 
 enum Type
 {
-    Literal = 4
+    Sum = 0,
+    Product = 1,
+    Minimum = 2,
+    Maximum = 3,
+    Literal = 4,
+    GreaterThan = 5,
+    LessThan = 6,
+    EqualTo = 7
 };
 
 enum LengthType
@@ -29,10 +36,8 @@ private:
 
 public:
     Packet(const std::vector<bool> &binaryVector);
-    std::vector<bool> InputData() const;
-    unsigned int Version() const;
     unsigned int VersionSum() const;
-    bool IsLiteral() const;
+    unsigned long long PacketValue() const;
     friend std::ostream &operator<<(std::ostream &os, const Packet &p);
 };
 

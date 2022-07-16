@@ -52,9 +52,9 @@ std::vector<bool> HexToBinary(std::string hexString)
     return v;
 }
 
-unsigned int BinaryToDecimal(const std::vector<bool> &binaryVector)
+unsigned long long BinaryToDecimal(const std::vector<bool> &binaryVector)
 {
-    unsigned int x{0};
+    unsigned long long x{0};
 
     size_t n{binaryVector.size()};
 

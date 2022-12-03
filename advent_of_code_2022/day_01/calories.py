@@ -1,5 +1,6 @@
 from typing import List
 
+
 def get_sums(inputs: List) -> List:
     elf_sums = []
     elf_sum = []

@@ -44,11 +44,11 @@ def process_stacks(stacks, instructions, version=9000):
         src = instruction[1]
         dst = instruction[2]
 
-        if version==9000:
+        if version == 9000:
             for _ in range(count):
                 item = stacks[src - 1].pop()
                 stacks[dst - 1].append(item)
-        elif version==9001:
+        elif version == 9001:
             to_add = []
             for _ in range(count):
                 item = stacks[src - 1].pop()
@@ -56,4 +56,3 @@ def process_stacks(stacks, instructions, version=9000):
             to_add.reverse()
             for item in to_add:
                 stacks[dst - 1].append(item)
-

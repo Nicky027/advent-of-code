@@ -17,5 +17,6 @@ def main():
     process_stacks(stacks_2, instructions, version=9001)
     print("".join([stack[-1] for stack in stacks_2]))
 
+
 if __name__ == "__main__":
     main()
